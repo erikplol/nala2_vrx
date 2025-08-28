@@ -71,7 +71,6 @@
 # Right Vert.      3
 # D-pad Horiz.     4
 # D-pad Vert.      5
-
 joy_teleop:
   ros__parameters:
 
@@ -83,48 +82,48 @@ joy_teleop:
       axis_mappings:
         data:
           axis: 1
-          scale: 1000.0
+          scale: 2000.0
           offset: 0
 
     right_thrust:
       type: topic
       interface_type: std_msgs/msg/Float64
       topic_name: /wamv/thrusters/right/thrust
-      deadman_buttons: [4]
+      deadman_buttons: [5]
       axis_mappings:
         data:
-          axis: 1
-          scale: 1000.0
+          axis: 3
+          scale: 2000.0
           offset: 0
 
-    left_pos:
-      type: topic
-      interface_type: std_msgs/msg/Float64
-      topic_name: /wamv/thrusters/left/pos
-      deadman_buttons: [4]
-      axis_mappings:
-        data:
-          axis: 2
-          scale: -1.0
-          offset: 0
+    # left_pos:
+    #   type: topic
+    #   interface_type: std_msgs/msg/Float64
+    #   topic_name: /wamv/thrusters/left/pos
+    #   deadman_buttons: [4]
+    #   axis_mappings:
+    #     data:
+    #       axis: 0
+    #       scale: -1.0
+    #       offset: 0
 
-    right_pos:
-      type: topic
-      interface_type: std_msgs/msg/Float64
-      topic_name: /wamv/thrusters/right/pos
-      deadman_buttons: [4]
-      axis_mappings:
-        data:
-          axis: 2
-          scale: -1.0
-          offset: 0
+    # right_pos:
+    #   type: topic
+    #   interface_type: std_msgs/msg/Float64
+    #   topic_name: /wamv/thrusters/right/pos
+    #   deadman_buttons: [4]
+    #   axis_mappings:
+    #     data:
+    #       axis: 2
+    #       scale: -1.0
+    #       offset: 0
 
-    ball_shooter:
-      type: topic
-      interface_type: std_msgs/msg/Bool
-      topic_name: /wamv/shooters/ball_shooter/fire
-      deadman_buttons: [1]
-      message_value:
-        data:
-          value: true
+    # ball_shooter:
+    #   type: topic
+    #   interface_type: std_msgs/msg/Bool
+    #   topic_name: /wamv/shooters/ball_shooter/fire
+    #   deadman_buttons: [1]
+    #   message_value:
+    #     data:
+    #       value: true
     

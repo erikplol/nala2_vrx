@@ -71,12 +71,12 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
         wamv/ball_shooter_launcher_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
         wamv/base_link:
           Alpha: 1
           Show Axes: false
@@ -86,12 +86,12 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
         wamv/front_left_camera_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
         wamv/front_left_camera_link_optical:
           Alpha: 1
           Show Axes: false
@@ -100,17 +100,17 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
         wamv/front_left_camera_post_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
         wamv/front_right_camera_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
         wamv/front_right_camera_link_optical:
           Alpha: 1
           Show Axes: false
@@ -119,12 +119,12 @@ Visualization Manager:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
         wamv/front_right_camera_post_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-          Value: true
+          Value: false
         wamv/gps_wamv_link:
           Alpha: 1
           Show Axes: false

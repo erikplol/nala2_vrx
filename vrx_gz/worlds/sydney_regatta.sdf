@@ -351,7 +351,7 @@
       <pose>0 0 0 0 0 0</pose>
       <uri>coast_waves</uri>
     </include>
-
+<!-- 
     <include>
       <name>mb_marker_buoy_red</name>
       <pose>-528 191 0 0 0 0</pose>
@@ -484,9 +484,9 @@
           <topic>/vrx/wavefield/parameters</topic>
         </wavefield>
       </plugin>
-    </include>
+    </include> -->
 
-    <include>
+    <!-- <include>
       <name>mb_round_buoy_black</name>
       <pose>-528 186 0 0 0 0</pose>
       <uri>https://fuel.gazebosim.org/1.0/openrobotics/models/mb_round_buoy_black</uri>
@@ -510,7 +510,7 @@
           <topic>/vrx/wavefield/parameters</topic>
         </wavefield>
       </plugin>
-    </include>
+    </include> -->
 
     <!-- The posts for securing the WAM-V -->
     <include>
@@ -550,6 +550,12 @@
       <name>ground_station_2</name>
       <pose>-534.550537 144.910400 1.720474 -0.004994 0.020798 1.301492</pose>
       <uri>https://fuel.gazebosim.org/1.0/openrobotics/models/ground_station</uri>
+    </include>
+
+    <!-- The VRX short navigation course -->
+    <include>
+      <uri>model://short_navigation_course_0</uri>
+      <pose>-524 198 0 0 0 -1.44</pose>
     </include>
 
     <!-- The projectile for the ball shooter -->
