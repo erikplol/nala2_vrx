@@ -8,7 +8,7 @@ from launch_ros.parameter_descriptions import ParameterValue
 
 def generate_launch_description():
 
-    urdf_path = os.path.join(get_package_share_directory('asv_model'), 'urdf', 'nala_rescuer.urdf.xacro')
+    urdf_path = os.path.join(get_package_share_directory('asv_model'), 'urdf', 'nala.urdf.xacro')
     asv_description = ParameterValue(Command(['xacro ', urdf_path]), value_type=str)
     robot_state_publisher_node = Node(
         package='robot_state_publisher',
@@ -16,12 +16,7 @@ def generate_launch_description():
         parameters=[{'robot_description': asv_description}]
     )
 
-    joint_state_publisher_node = Node(
-        package='joint_state_publisher_gui',
-        executable='joint_state_publisher_gui' 
-    )
-
-    rviz_config_path = os.path.join(get_package_share_directory('rviz_plugin'), 'rviz', 'ares.rviz')
+    rviz_config_path = os.path.join(get_package_share_directory('rviz_plugin'), 'rviz', 'manta.rviz')
     rviz_plugin_node = Node(
         package='rviz2',
         executable='rviz2',
@@ -30,6 +25,5 @@ def generate_launch_description():
 
     return LaunchDescription([
         robot_state_publisher_node,
-        # joint_state_publisher_node,
         rviz_plugin_node,
     ])

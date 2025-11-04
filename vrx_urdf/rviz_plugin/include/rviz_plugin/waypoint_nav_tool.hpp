@@ -13,7 +13,20 @@
 #include <rviz_common/visualization_manager.hpp>
 #include <rviz_common/properties/vector_property.hpp>
 
+#include <Ogre.h>
+
+#include <geometry_msgs/msg/pose_stamped.hpp>
+
+#include <rviz_rendering/geometry.hpp>
+#include <rviz_common/render_panel.hpp>
+#include <rviz_rendering/mesh_loader.hpp>
+#include <rviz_common/validate_floats.hpp>
+#include <rviz_common/window_manager_interface.hpp>
+#include <rviz_rendering/viewport_projection_finder.hpp>
+
 #include "waypoint_nav_frame.hpp"
+
+#include <boost/thread/mutex.hpp>
 
 namespace Ogre
 {
@@ -26,7 +39,13 @@ class VectorProperty;
 class VisualizationManager;
 class ViewportMouseEvent;
 class PanelDockWidget;
-}  // namespace rviz
+} 
+ // namespace rviz
+
+namespace waypoint_nav_plugin
+{ 
+class WaypointNavPanel;
+}  // namespace waypoint_nav_plugin 
 
 namespace waypoint_nav_plugin
 {

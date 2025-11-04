@@ -207,36 +207,6 @@
             <string>Mission 10 In</string>
            </property>
           </item>
-          <item>
-           <property name="text">
-            <string>Mission 11 Pre</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Mission 11 In</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Mission 12 Pre</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Mission 12 In</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Mission 13 Pre</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Mission 13 In</string>
-           </property>
-          </item>
          </widget>
         </item>
         <item row="4" column="1">
@@ -331,7 +301,7 @@
          <number>3</number>
         </property>
         <item>
-         <widget class="QPushButton" name="insert_button">
+         <widget class="QPushButton" name="calibrate_button">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -339,7 +309,7 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Insert</string>
+           <string>Calibrate</string>
           </property>
          </widget>
         </item>
@@ -470,7 +440,7 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_11">
         <item>
-         <widget class="QPushButton" name="path_button">
+         <widget class="QPushButton" name="start_route_button">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -481,12 +451,12 @@
            <string notr="true">background-color: rgb(152, 106, 68)</string>
           </property>
           <property name="text">
-           <string>Start Path</string>
+           <string>Start Route</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="clear_path_button">
+         <widget class="QPushButton" name="clear_route_button">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -497,7 +467,7 @@
            <string notr="true">background-color: rgb(145, 65, 172)</string>
           </property>
           <property name="text">
-           <string>Clear Path</string>
+           <string>Clear Route</string>
           </property>
          </widget>
         </item>

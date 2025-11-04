@@ -1,24 +1,4 @@
-#include <Ogre.h>
-
-#include <rclcpp/rclcpp.hpp>
-#include <geometry_msgs/msg/pose_stamped.hpp>
-
-#include <rviz_rendering/geometry.hpp>
-#include <rviz_common/render_panel.hpp>
-#include <rviz_rendering/mesh_loader.hpp>
-#include <rviz_common/validate_floats.hpp>
-#include <rviz_common/panel_dock_widget.hpp>
-#include <rviz_common/viewport_mouse_event.hpp>
-#include <rviz_common/visualization_manager.hpp>
-#include <rviz_common/window_manager_interface.hpp>
-#include <rviz_common/properties/vector_property.hpp>
-#include <rviz_rendering/viewport_projection_finder.hpp>
-
-#include <interactive_markers/interactive_marker_server.hpp>
-#include <interactive_markers/menu_handler.hpp>
-
 #include "rviz_plugin/waypoint_nav_tool.hpp"
-#include <boost/thread/mutex.hpp>
 
 using namespace std::placeholders;
 
@@ -101,13 +81,6 @@ void WaypointNavTool::onInitialize() {
   }
 
   frame_->enable();
-
-  // RCLCPP_INFO(rclcpp::get_logger("waypoint_nav_tool"), "Finished enable frame for menu handler");
-
-  // add Delete menu for interactive marker
-  //  TODO: in here got some null pointer direfference
-  // menu_handler_.insert("Delete", std::bind(&WaypointNavTool::processFeedback, this, std::placeholders::_1));
-  // menu_handler_.insert("Set Manual", std::bind(&WaypointNavTool::processFeedback, this, std::placeholders::_1));
 
   RCLCPP_INFO(rclcpp::get_logger("waypoint_tool"), "Initialization success");
 }
@@ -196,7 +169,7 @@ void WaypointNavTool::makeIm(const Ogre::Vector3 &position, const Ogre::Quaterni
   entity = scene_manager_->createEntity(flag_resource_);
   auto sn_ptr_visual = sn_ptr->createChildSceneNode();
   sn_ptr_visual->attachObject(entity);
-  sn_ptr_visual->setOrientation(Ogre::Quaternion(Ogre::Degree(-91.8), Ogre::Vector3::UNIT_Z)); // Rotate only the visual
+  sn_ptr_visual->setOrientation(Ogre::Quaternion(Ogre::Degree(-93.8), Ogre::Vector3::UNIT_Z)); // Rotate only the visual
   sn_ptr->setVisible(true);
   sn_ptr->setPosition(position);
   sn_ptr->setOrientation(quat);
@@ -226,7 +199,7 @@ void WaypointNavTool::makeIm(const Ogre::Vector3 &position, const Ogre::Quaterni
   int_marker.pose = pos.pose;
   int_marker.scale = 1.5;
   int_marker.name = wp_name_str;
-  int_marker.description = wp_name_str;
+  int_marker.description = "";
 
   // create a cylinder marker
   auto cyn_marker = visualization_msgs::msg::Marker();
@@ -251,10 +224,22 @@ void WaypointNavTool::makeIm(const Ogre::Vector3 &position, const Ogre::Quaterni
   cyn_marker.color.b = color[2];
   cyn_marker.color.a = 0.5;
 
-  // create a non-interactive control which contains the marker
+  // create a text marker for the waypoint label
+  auto text_marker = visualization_msgs::msg::Marker();
+  text_marker.type = visualization_msgs::msg::Marker::TEXT_VIEW_FACING;
+  text_marker.text = wp_desc_str;  // Display waypoint name and mission
+  text_marker.scale.z = 0.5;  // Text height (bigger for better visibility)
+  text_marker.color.r = 0.0;  // Black color
+  text_marker.color.g = 0.0;
+  text_marker.color.b = 0.0;
+  text_marker.color.a = 1.0;  // Fully opaque
+  text_marker.pose.position.z = 1.0;  // Position text above the waypoint
+
+  // create a non-interactive control which contains the markers
   auto cyn_control = visualization_msgs::msg::InteractiveMarkerControl();
   cyn_control.always_visible = true;
   cyn_control.markers.push_back(cyn_marker);
+  cyn_control.markers.push_back(text_marker);  // Add text marker
 
   // add the control to the interactive marker
   int_marker.controls.push_back(cyn_control);
@@ -331,6 +316,13 @@ void WaypointNavTool::processFeedback(const visualization_msgs::msg::Interactive
         sn_entry->second->setPosition(position);
         sn_entry->second->setOrientation(quat);
 
+        // Also update the visual child node to ensure it stays synchronized
+        std::map<int, Ogre::SceneNode*>::iterator visual_entry = waypointNodeMap_.find(sn_entry->first + 1000);
+        if (visual_entry != waypointNodeMap_.end()) {
+          // Ensure the visual child maintains its offset rotation
+          visual_entry->second->setOrientation(Ogre::Quaternion(Ogre::Degree(-93.8), Ogre::Vector3::UNIT_Z));
+        }
+
         frame_->setWpLabel();
 
         server_->setPose(feedback->marker_name, pos);
@@ -354,15 +346,23 @@ void WaypointNavTool::processFeedback(const visualization_msgs::msg::Interactive
       position.y = pos.pose.position.y;
       position.z = pos.pose.position.z;
 
-      sn_entry->second->setPosition(position);
-
       Ogre::Quaternion quat;
       quat.x = pos.pose.orientation.x;
       quat.y = pos.pose.orientation.y;
       quat.z = pos.pose.orientation.z;
       quat.w = pos.pose.orientation.w;
 
+      // Update parent node (this contains the arrow visual as a child)
+      sn_entry->second->setPosition(position);
       sn_entry->second->setOrientation(quat);
+
+      // Also update the visual child node to ensure it stays synchronized
+      // The visual node is stored at marker_id + 1000
+      std::map<int, Ogre::SceneNode*>::iterator visual_entry = waypointNodeMap_.find(sn_entry->first + 1000);
+      if (visual_entry != waypointNodeMap_.end()) {
+        // Ensure the visual child maintains its offset rotation (-93.8 degrees on Z axis)
+        visual_entry->second->setOrientation(Ogre::Quaternion(Ogre::Degree(-93.8), Ogre::Vector3::UNIT_Z));
+      }
 
       frame_->setWpLabel();
       frame_->setPose(position, quat, wp_index);

@@ -5,6 +5,8 @@
 #include <boost/thread/mutex.hpp>
 #endif
 #include <vector>
+#include <thread>
+#include <future>
 
 #include <rviz_common/panel.hpp>
 #include <rviz_common/display.hpp>
@@ -17,6 +19,7 @@
 #include <rclcpp/rclcpp.hpp>
 #include <nav_msgs/msg/path.hpp>
 #include <std_msgs/msg/string.hpp>
+#include <std_srvs/srv/trigger.hpp>
 #include <geometry_msgs/msg/pose_stamped.hpp>
 #include <geometry_msgs/msg/transform_stamped.hpp>
 
@@ -27,6 +30,23 @@
 
 #include <nala2_interfaces/srv/string_service.hpp>
 #include <nala2_interfaces/srv/set_path.hpp>
+
+#include <fstream>
+#include <OgreSceneNode.h>
+#include <chrono>
+
+#include "waypoint_nav_tool.hpp"
+
+#include <QTimer>
+#include <tf2/LinearMath/Quaternion.h>
+#include <yaml-cpp/yaml.h>
+
+#include <QFileDialog>
+#include <QKeyEvent>
+
+#include <boost/foreach.hpp>
+
+#include <pluginlib/class_list_macros.hpp>
 
 #include "ui_WaypointNavigation.h"
 
@@ -43,6 +63,7 @@ class WaypointNavigationWidget;
 namespace waypoint_nav_plugin
 {
 class WaypointNavTool;
+class WaypointNavPanel;
 }
 
 namespace waypoint_nav_plugin
@@ -78,7 +99,7 @@ protected:
   void initService();
 
   void drawPath(int current_mission, bool is_base_mission=false);
-  void pose_callback(const geometry_msgs::msg::PoseStamped& msg);
+  void poseCallback(const geometry_msgs::msg::PoseStamped& msg);
 
   void setPath();
   void setWpCount(int size);
@@ -86,7 +107,6 @@ protected:
   void setSelectedMarkerName(std::string name);
   void setConfig(QString topic, QString frame, float height);
   void setPose(const Ogre::Vector3& position, const Ogre::Quaternion& quat, const int wp_index);
-  bool isPoseFarEnough(const geometry_msgs::msg::PoseStamped::SharedPtr& new_pose, const geometry_msgs::msg::PoseStamped& last_pose);
   
   void writeToYaml(const std::string &filename);
   void writeToJson(const std::string &filename);
@@ -104,13 +124,18 @@ protected:
   
   void autonomy();
   void recordRoute();
+  void clearRoute();
+  void loadRoute();
+  void saveRoute(); 
   void spinOnce();
   void timerEvent(QTimerEvent * event) override;
+
+  void calibratePose(bool button_clicked);
 
   void placeWaypoint();
   void insertWaypoint(const Ogre::Vector3& pos, const Ogre::Quaternion& quat);
   
-  void publishAllWaypoint();
+  void publishAllWaypoints();
   void publishWaypoint();
   
   void saveWaypoint();
@@ -129,6 +154,7 @@ private:
   rclcpp::Subscription<geometry_msgs::msg::PoseStamped>::SharedPtr pose_sub_;
   rclcpp::Client<nala2_interfaces::srv::StringService>::SharedPtr autonomy_client_;
   rclcpp::Client<nala2_interfaces::srv::StringService>::SharedPtr route_client_;
+  rclcpp::Client<std_srvs::srv::Trigger>::SharedPtr calibrate_client_;
 
 
   std::shared_ptr<tf2_ros::Buffer> tf_buffer_;
