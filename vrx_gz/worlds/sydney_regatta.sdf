@@ -513,6 +513,13 @@
     </include> -->
 
     <!-- The posts for securing the WAM-V -->
+    <!-- Nala2 Boat -->
+    <include>
+      <name>nala2_boat</name>
+      <pose>-515 180 0 0 0 0</pose>
+      <uri>nala2_boat</uri>
+    </include>
+
     <include>
       <name>post_0</name>
       <pose>-535.916809 154.362869 0.675884 -0.17182 0.030464 -0.005286</pose>
